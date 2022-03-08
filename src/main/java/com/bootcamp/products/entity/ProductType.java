@@ -12,4 +12,6 @@ public class ProductType {
 
     @Id
     private String id;
+
+    private String name;
 }
