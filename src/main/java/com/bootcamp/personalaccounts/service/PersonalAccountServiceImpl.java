@@ -27,4 +27,9 @@ public class PersonalAccountServiceImpl implements IPersonalAccountService {
     public Mono<PersonalAccount> findByName(String name) {
         return personalAccountRepository.findByName(name);
     }
+
+    @Override
+    public Mono<PersonalAccount> findById(String id) {
+        return personalAccountRepository.findById(id);
+    }
 }

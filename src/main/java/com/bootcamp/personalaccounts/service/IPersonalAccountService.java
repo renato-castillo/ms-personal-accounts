@@ -11,4 +11,6 @@ public interface IPersonalAccountService {
     Flux<PersonalAccount> findAll();
 
     Mono<PersonalAccount> findByName(String name);
+
+    Mono<PersonalAccount> findById(String id);
 }

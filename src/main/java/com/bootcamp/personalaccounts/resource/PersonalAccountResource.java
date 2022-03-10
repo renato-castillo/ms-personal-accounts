@@ -18,19 +18,28 @@ public class PersonalAccountResource extends MapperUtil {
     @Autowired
     private IPersonalAccountService personalAccountService;
 
-    public Mono<PersonalAccountDto> save(PersonalAccountDto personalAccountDto) {
+    public Mono<PersonalAccountDto> create(PersonalAccountDto personalAccountDto) {
 
         PersonalAccount personalAccount = convertToEntity(personalAccountDto);
 
-        if(personalAccountDto.getId() != null) {
-            personalAccount.setUpdatedAt(LocalDateTime.now());
-        } else {
-            personalAccount.setCreatedAt(LocalDateTime.now());
-        }
+        personalAccount.setCreatedAt(LocalDateTime.now());
 
         Mono<PersonalAccount> entity = personalAccountService.save(personalAccount);
 
         return entity.map(x -> convertToDto(x));
+    }
+
+    public Mono<PersonalAccountDto> update(PersonalAccountDto personalAccountDto) {
+
+        Mono<PersonalAccount> personalAccountMono = personalAccountService.findById(personalAccountDto.getId());
+
+        if(!personalAccountMono.equals(Mono.empty())) {
+            PersonalAccount personalAccount = convertToEntity(personalAccountDto);
+            personalAccount.setUpdatedAt(LocalDateTime.now());
+            return personalAccountMono.map(x -> convertToDto(personalAccount));
+        }
+
+        return Mono.empty();
     }
 
     public Flux<PersonalAccountDto> findAll() {

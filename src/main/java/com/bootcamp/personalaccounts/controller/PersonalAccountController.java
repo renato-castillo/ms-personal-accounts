@@ -16,8 +16,13 @@ public class PersonalAccountController {
     private PersonalAccountResource personalAccountResource;
 
     @PostMapping
-    public Mono<PersonalAccountDto> save(@RequestBody PersonalAccountDto personalAccountDto) {
-        return personalAccountResource.save(personalAccountDto);
+    public Mono<PersonalAccountDto> create(@RequestBody PersonalAccountDto personalAccountDto) {
+        return personalAccountResource.create(personalAccountDto);
+    }
+
+    @PutMapping
+    public Mono<PersonalAccountDto> update(@RequestBody PersonalAccountDto personalAccountDto) {
+        return personalAccountResource.update(personalAccountDto);
     }
 
     @GetMapping
