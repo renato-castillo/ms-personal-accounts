@@ -19,6 +19,11 @@ public class PersonalAccountServiceImpl implements IPersonalAccountService {
     }
 
     @Override
+    public Mono<Void> deleteById(String id) {
+        return personalAccountRepository.deleteById(id);
+    }
+
+    @Override
     public Flux<PersonalAccount> findAll() {
         return personalAccountRepository.findAll();
     }

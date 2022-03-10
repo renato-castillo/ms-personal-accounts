@@ -36,7 +36,20 @@ public class PersonalAccountResource extends MapperUtil {
         if(!personalAccountMono.equals(Mono.empty())) {
             PersonalAccount personalAccount = convertToEntity(personalAccountDto);
             personalAccount.setUpdatedAt(LocalDateTime.now());
-            return personalAccountMono.map(x -> convertToDto(personalAccount));
+
+            return personalAccountService.save(personalAccount)
+                    .map(x -> convertToDto(personalAccount));
+        }
+
+        return Mono.empty();
+    }
+
+    public Mono<Void> delete(PersonalAccountDto personalAccountDto) {
+
+        Mono<PersonalAccount> personalAccountMono = personalAccountService.findById(personalAccountDto.getId());
+
+        if(!personalAccountMono.equals(Mono.empty())) {
+            return personalAccountService.deleteById(personalAccountDto.getId());
         }
 
         return Mono.empty();

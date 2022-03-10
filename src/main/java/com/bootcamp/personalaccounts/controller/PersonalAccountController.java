@@ -25,6 +25,11 @@ public class PersonalAccountController {
         return personalAccountResource.update(personalAccountDto);
     }
 
+    @DeleteMapping
+    public Mono<Void> delete(@RequestBody PersonalAccountDto personalAccountDto) {
+        return personalAccountResource.delete(personalAccountDto);
+    }
+
     @GetMapping
     public Flux<PersonalAccountDto> findAll() {
         return personalAccountResource.findAll();
