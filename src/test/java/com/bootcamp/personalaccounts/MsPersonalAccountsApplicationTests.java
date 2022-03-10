@@ -1,10 +1,10 @@
-package com.bootcamp.products;
+package com.bootcamp.personalaccounts;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MsProductsApplicationTests {
+class MsPersonalAccountsApplicationTests {
 
     @Test
     void contextLoads() {

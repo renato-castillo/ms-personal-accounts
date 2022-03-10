@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bootcamp.products</groupId>
-    <artifactId>ms-products</artifactId>
+    <artifactId>ms-personal-accounts</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ms-products</name>
-    <description>ms-products</description>
+    <name>ms-personal-accounts</name>
+    <description>ms-personal-accounts</description>
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
