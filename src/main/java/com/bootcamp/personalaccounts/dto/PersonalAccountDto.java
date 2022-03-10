@@ -18,4 +18,6 @@ public class PersonalAccountDto {
     private Integer maxMonthlyMovements;
 
     private Integer uniqueMovementDay;
+
+    private Integer maxPerClient;
 }
