@@ -38,6 +38,7 @@ public class PersonalAccountResource extends MapperUtil {
                 .switchIfEmpty(Mono.error(new Exception()))
                 .flatMap(y -> {
                     PersonalAccount personalAccount = convertToEntity(personalAccountDto);
+                    personalAccount.setCreatedAt(y.getCreatedAt());
                     personalAccount.setUpdatedAt(LocalDateTime.now());
 
                     return personalAccountService.save(personalAccount).map(x -> convertToDto(x));
@@ -55,6 +56,10 @@ public class PersonalAccountResource extends MapperUtil {
 
         return personalAccountService.findAll()
                 .map(x -> convertToDto(x));
+    }
+
+    public Mono<PersonalAccountDto> findById(String id) {
+        return personalAccountService.findById(id).map(x -> convertToDto(x));
     }
 
     public Mono<PersonalAccountDto> findByName(String name) {

@@ -35,7 +35,12 @@ public class PersonalAccountController {
         return personalAccountResource.findAll();
     }
 
-    @GetMapping("/find/name/{name}")
+    @GetMapping("/{id}")
+    public Mono<PersonalAccountDto> findById(@PathVariable String id) {
+        return personalAccountResource.findById(id);
+    }
+
+    @GetMapping("/name/{name}")
     public Mono<PersonalAccountDto> findByName(@PathVariable String name) {
         return personalAccountResource.findByName(name);
     }
