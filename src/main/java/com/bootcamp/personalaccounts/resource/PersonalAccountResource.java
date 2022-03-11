@@ -4,6 +4,7 @@ import com.bootcamp.personalaccounts.dto.PersonalAccountDto;
 import com.bootcamp.personalaccounts.entity.PersonalAccount;
 import com.bootcamp.personalaccounts.service.IPersonalAccountService;
 import com.bootcamp.personalaccounts.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.CoreSubscriber;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 public class PersonalAccountResource extends MapperUtil {
 
@@ -20,52 +22,44 @@ public class PersonalAccountResource extends MapperUtil {
 
     public Mono<PersonalAccountDto> create(PersonalAccountDto personalAccountDto) {
 
+        log.debug("Create method beggining...");
+
         PersonalAccount personalAccount = convertToEntity(personalAccountDto);
 
         personalAccount.setCreatedAt(LocalDateTime.now());
 
-        Mono<PersonalAccount> entity = personalAccountService.save(personalAccount);
-
-        return entity.map(x -> convertToDto(x));
+        return personalAccountService.save(personalAccount)
+                .map(x -> convertToDto(x));
     }
 
     public Mono<PersonalAccountDto> update(PersonalAccountDto personalAccountDto) {
 
-        Mono<PersonalAccount> personalAccountMono = personalAccountService.findById(personalAccountDto.getId());
+        return personalAccountService.findById(personalAccountDto.getId())
+                .switchIfEmpty(Mono.error(new Exception()))
+                .flatMap(y -> {
+                    PersonalAccount personalAccount = convertToEntity(personalAccountDto);
+                    personalAccount.setUpdatedAt(LocalDateTime.now());
 
-        if(!personalAccountMono.equals(Mono.empty())) {
-            PersonalAccount personalAccount = convertToEntity(personalAccountDto);
-            personalAccount.setUpdatedAt(LocalDateTime.now());
-
-            return personalAccountService.save(personalAccount)
-                    .map(x -> convertToDto(personalAccount));
-        }
-
-        return Mono.empty();
+                    return personalAccountService.save(personalAccount).map(x -> convertToDto(x));
+                });
     }
 
     public Mono<Void> delete(PersonalAccountDto personalAccountDto) {
 
-        Mono<PersonalAccount> personalAccountMono = personalAccountService.findById(personalAccountDto.getId());
-
-        if(!personalAccountMono.equals(Mono.empty())) {
-            return personalAccountService.deleteById(personalAccountDto.getId());
-        }
-
-        return Mono.empty();
+        return personalAccountService.findById(personalAccountDto.getId())
+                .switchIfEmpty(Mono.error(new Exception()))
+                .flatMap(x -> personalAccountService.deleteById(personalAccountDto.getId()));
     }
 
     public Flux<PersonalAccountDto> findAll() {
 
-        Flux<PersonalAccount> personalAccounts = personalAccountService.findAll();
-
-        return personalAccounts.map(x -> convertToDto(x));
+        return personalAccountService.findAll()
+                .map(x -> convertToDto(x));
     }
 
     public Mono<PersonalAccountDto> findByName(String name) {
 
-        Mono<PersonalAccount> personalAccount = personalAccountService.findByName(name);
-
-        return personalAccount.map(x -> convertToDto(x));
+        return personalAccountService.findByName(name)
+                .map(x -> convertToDto(x));
     }
 }
