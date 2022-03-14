@@ -1,24 +1,24 @@
 package com.bootcamp.personalaccounts.util;
 
-import com.bootcamp.personalaccounts.dto.PersonalAccountDto;
-import com.bootcamp.personalaccounts.entity.PersonalAccount;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public abstract class MapperUtil {
 
-    public PersonalAccountDto convertToDto(PersonalAccount personalAccount) {
-        PersonalAccountDto personalAccountDto = new PersonalAccountDto();
-        BeanUtils.copyProperties(personalAccount, personalAccountDto);
+    static ModelMapper modelMapper = new ModelMapper();
 
-        return personalAccountDto;
+    public static <D, T> D map(final T entity, Class<D> outClass){
+        return modelMapper.map(entity,outClass);
     }
 
-    public PersonalAccount convertToEntity(PersonalAccountDto personalAccountDto) {
-        PersonalAccount personalAccount = new PersonalAccount();
-        BeanUtils.copyProperties(personalAccountDto, personalAccount);
-
-        return personalAccount;
+    public <D, T> List<D> mapAll(final Collection <T> entityList, Class<D> outClass){
+        return entityList.stream()
+                .map(entity->map(entity, outClass))
+                .collect(Collectors.toList());
     }
-
 
 }

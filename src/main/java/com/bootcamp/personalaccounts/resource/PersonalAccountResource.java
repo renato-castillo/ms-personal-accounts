@@ -24,12 +24,12 @@ public class PersonalAccountResource extends MapperUtil {
 
         log.debug("Create method beggining...");
 
-        PersonalAccount personalAccount = convertToEntity(personalAccountDto);
+        PersonalAccount personalAccount = map(personalAccountDto, PersonalAccount.class);
 
         personalAccount.setCreatedAt(LocalDateTime.now());
 
         return personalAccountService.save(personalAccount)
-                .map(x -> convertToDto(x));
+                .map(x -> map(x, PersonalAccountDto.class));
     }
 
     public Mono<PersonalAccountDto> update(PersonalAccountDto personalAccountDto) {
@@ -37,11 +37,11 @@ public class PersonalAccountResource extends MapperUtil {
         return personalAccountService.findById(personalAccountDto.getId())
                 .switchIfEmpty(Mono.error(new Exception()))
                 .flatMap(y -> {
-                    PersonalAccount personalAccount = convertToEntity(personalAccountDto);
+                    PersonalAccount personalAccount = map(personalAccountDto, PersonalAccount.class);
                     personalAccount.setCreatedAt(y.getCreatedAt());
                     personalAccount.setUpdatedAt(LocalDateTime.now());
 
-                    return personalAccountService.save(personalAccount).map(x -> convertToDto(x));
+                    return personalAccountService.save(personalAccount).map(x -> map(x, PersonalAccountDto.class));
                 });
     }
 
@@ -55,16 +55,16 @@ public class PersonalAccountResource extends MapperUtil {
     public Flux<PersonalAccountDto> findAll() {
 
         return personalAccountService.findAll()
-                .map(x -> convertToDto(x));
+                .map(x -> map(x, PersonalAccountDto.class));
     }
 
     public Mono<PersonalAccountDto> findById(String id) {
-        return personalAccountService.findById(id).map(x -> convertToDto(x));
+        return personalAccountService.findById(id).map(x -> map(x, PersonalAccountDto.class));
     }
 
     public Mono<PersonalAccountDto> findByName(String name) {
 
         return personalAccountService.findByName(name)
-                .map(x -> convertToDto(x));
+                .map(x -> map(x, PersonalAccountDto.class));
     }
 }
