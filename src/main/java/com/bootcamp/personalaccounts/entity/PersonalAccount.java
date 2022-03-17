@@ -21,4 +21,6 @@ public class PersonalAccount extends BaseEntity {
     private Integer uniqueMovementDay;
 
     private Integer maxPerClient;
+
+    private Float minOpenBalance;
 }
