@@ -23,4 +23,8 @@ public class PersonalAccount extends BaseEntity {
     private Integer maxPerClient;
 
     private Float minOpenBalance;
+
+    private Integer limitWithoutCommission;
+
+    private Float commissionTransaction;
 }
